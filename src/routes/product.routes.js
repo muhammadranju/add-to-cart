@@ -5,7 +5,7 @@ const {
 } = require("../controllers/product.controller");
 
 router.route("/product/:productID").get();
-router.route("/product").get(allProductGetController);
+router.route("/").get(allProductGetController);
 
 router.route("/product").post();
 router.route("/product").patch();
