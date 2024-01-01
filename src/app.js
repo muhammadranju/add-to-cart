@@ -1,22 +1,19 @@
 const path = require("path");
 const express = require("express");
-const morgan = require("morgan");
 const AddToCart = require("./models/addToCart.model");
 const Product = require("./models/product.model");
 
 const routes = require("./routes");
+const middleware = require("./middleware/global.middleware");
+
 const app = express();
-app.use([
-  express.json(),
-  express.urlencoded({ extended: false }),
-  morgan("dev"),
-]);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("src/views"));
 app.use(express.static(path.resolve("src/public")));
 
 app.use(routes);
+app.use(middleware);
 
 app.get("/", async (req, res, next) => {
   const products = await Product.find();
