@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const AddToCart = require("./models/addToCart.model");
 const Product = require("./models/product.model");
 
+const routes = require("./routes");
 const app = express();
 app.use([
   express.json(),
@@ -14,6 +15,8 @@ app.use([
 app.set("view engine", "ejs");
 app.set("views", path.resolve("src/views"));
 app.use(express.static(path.resolve("src/public")));
+
+app.use(routes);
 
 app.get("/", async (req, res, next) => {
   const products = await Product.find();
