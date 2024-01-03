@@ -3,6 +3,7 @@ const express = require("express");
 
 const routes = require("./routes");
 const middleware = require("./middleware/global.middleware");
+const { notFoundHandler, errorHandler } = require("./common/commonController");
 
 const app = express();
 
@@ -12,5 +13,7 @@ app.use(express.static(path.resolve("src/public")));
 
 app.use(middleware);
 app.use(routes);
+
+app.use(notFoundHandler, errorHandler);
 
 module.exports = app;
