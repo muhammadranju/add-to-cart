@@ -2,8 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 
 const middleware = [
-  express.json(),
-  express.urlencoded({ extended: true }),
+  express.json({ limit: "16kb" }),
+  express.urlencoded({ extended: true, limit: "16kb" }),
   morgan("dev"),
 ];
 
