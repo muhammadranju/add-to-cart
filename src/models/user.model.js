@@ -5,21 +5,21 @@ const userSchema = new Schema(
     username: {
       type: String,
       trim: true,
-      //   required: true,
+      required: true,
     },
-    full_name: {
+    fullName: {
       type: String,
       trim: true,
     },
     email: {
       type: String,
       trim: true,
-      //   required: true,
+      required: true,
     },
     password: {
       type: String,
       trim: true,
-      //   required: true,
+      required: true,
     },
   },
   {
