@@ -1,18 +1,55 @@
-const AddToCart = require("../models/addToCart.model");
+const Cart = require("../models/Cart.model");
+const asyncHandler = require("../utils/asyncHandler");
 
 const addToCartGetController = async (req, res, next) => {
-  const carts = await AddToCart.find();
-  console.log(carts);
+  const carts = await Cart.find();
   return res.render("pages/addTOcart", { carts });
 };
 
-const addToCartPostController = async (req, res, next) => {
+const addToCartPostController = asyncHandler(async (req, res, next) => {
   try {
-    const user = "658e5e825e645e8af6037489";
-    const { productId, productTitle, productPrice, quantity = 1 } = req.body;
+    const userId = req.user?._id;
+    const {
+      productId,
+      productTitle,
+      productPrice,
+      productImage,
+      quantity = 1,
+    } = req.body;
 
-    const findUser = await AddToCart.findOne({ user });
+    const cartProduct = await Cart.find({ user: userId });
 
+    cartProduct.forEach((items) => {
+      console.log(productId === items.productId);
+      if (productId === items.productId) {
+        items.quantity = quantity + cartProduct?.quantity;
+        items.productPrice =
+          parseFloat(productPrice) * parseFloat(cartProduct?.quantity);
+        // cartProduct.save()
+      }
+      console.log(cartProduct);
+    });
+    // findUser.quantity = quantity + findUser?.quantity;
+    // findUser.productPrice =
+    //   parseFloat(productPrice) * parseFloat(findUser?.quantity);
+    // findUser.save();
+
+    // if (user) {
+    //   if (productId !== findUser?.productId) {
+    //     const cart = new Cart({
+    //       user,
+    //       productId,
+    //       productTitle,
+    //       productPrice,
+    //       productImage,
+    //       quantity,
+    //     });
+    //     // await cart.save();
+    //     return res.redirect(`/api/v1/products/product/${productId}`);
+    //   }
+    // }
+
+    // console.log(cart);
     //   //   if (productId === findUser?.productId) {
     //   //     findUser.quantity = quantity + findUser.quantity;
 
@@ -36,20 +73,20 @@ const addToCartPostController = async (req, res, next) => {
     //     console.log("ok");
     //   }
 
-    const addCart = new AddToCart({
-      productId,
-      user,
-      productTitle,
-      productPrice: parseFloat(productPrice),
-      quantity,
-    });
+    // const addCart = new AddToCart({
+    //   productId,
+    //   // user,
+    //   productTitle,
+    //   productPrice: parseFloat(productPrice),
+    //   quantity,
+    // });
 
-    await addCart.save();
+    // await cart.save();
 
-    return res.redirect("/");
+    return res.redirect(`/api/v1/products/product/${productId}`);
   } catch (error) {
     console.log(error);
   }
-};
+});
 
 module.exports = { addToCartGetController, addToCartPostController };
