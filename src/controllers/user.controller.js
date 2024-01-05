@@ -5,7 +5,9 @@ const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 
-const userLoginGetController = async (req, res, next) => {};
+const userLoginGetController = async (req, res, next) => {
+  return res.status(200).render("pages/login");
+};
 const userLoginPostController = asyncHandler(async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -14,6 +16,7 @@ const userLoginPostController = asyncHandler(async (req, res, next) => {
       return res.status(200).json({ error: "All field are required" });
     }
 
+    console.log(req.body);
     const findUser = await User.findOne({ email });
     if (!findUser) {
       return res.status(200).json({ error: "Invalid email or password" });
