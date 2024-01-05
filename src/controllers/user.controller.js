@@ -20,15 +20,15 @@ const userLoginPostController = asyncHandler(async (req, res, next) => {
     }
 
     const payload = {
-      id: findUser._id,
+      _id: findUser._id,
       username: findUser.username,
-      fullName: findUser?.full_name,
+      fullName: findUser?.fullName,
       email: findUser.email,
     };
 
     const accessToken = await jwt.sign(
       payload,
-      "mnfjdn56kndf%*(#&%&$df5d7dsfjksdhnfsdfjhsdf4hs41f"
+      process.env.ACCESS_TOKEN_SECRET
     );
 
     const matchPassword = await bcrypt.compare(password, findUser.password);
