@@ -14,17 +14,17 @@ const addToCartGetController = async (req, res, next) => {
 
 const addToCartPostController = asyncHandler(async (req, res, next) => {
   try {
-    const userId = req.user?._id;
-    const {
-      productId,
-      productTitle,
-      productPrice,
-      productImage,
-      quantity = 1,
-    } = req.body;
+    const owner = req.user?._id;
+    const { productId } = req.body;
+    const { quantity = 1 } = req.body;
 
-    // const cart = await Cart.findOne({ owner: req.user._id });
-    const cart = await Cart.find();
+    const cart = await Cart.findOne({ owner: req.user._id });
+    // const cart = await Cart.find();
+
+    if (!cart) {
+      const newCart = new Cart({ productId, quantity, owner });
+      await newCart.save();
+    }
 
     const product = await Product.findById(productId);
 
@@ -44,27 +44,28 @@ const addToCartPostController = asyncHandler(async (req, res, next) => {
           : "Product is out of stock"
       );
     }
-    console.log(cart.items.push({ productId, quantity }));
 
-    // // See if the product that user is adding already exists in the cart
-    // const addedProduct = cart.items?.find(
-    //   (item) => item.productId.toString() === productId
-    // );
-    // if (addedProduct) {
-    //   // If product already exist assign a new quantity to it
-    //   // ! We are not adding or subtracting quantity to keep it dynamic. Frontend will send us updated quantity here
-    //   addedProduct.quantity = quantity;
-    //   // if user updates the cart remove the coupon associated with the cart to avoid misuse
-    //   // Do this only if quantity changes because if user adds a new project the cart total will increase anyways
-    // } else {
-    //   // if its a new product being added in the cart push it to the cart items
-    //   cart.items.push({
-    //     productId,
-    //     quantity,
-    //   });
-    // }
+    // See if the product that user is adding already exists in the cart
+    const addedProduct = cart.items?.find(
+      (item) => item.productId.toString() === productId
+    );
 
-    // await cart.save({ validateBeforeSave: true });
+    if (addedProduct) {
+      // If product already exist assign a new quantity to it
+      // ! We are not adding or subtracting quantity to keep it dynamic. Frontend will send us updated quantity here
+      addedProduct.quantity = parseFloat(quantity) + 1;
+      // if user updates the cart remove the coupon associated with the cart to avoid misuse
+      // Do this only if quantity changes because if user adds a new project the cart total will increase anyways
+    } else {
+      // if its a new product being added in the cart push it to the cart items
+      cart.items.push({
+        productId,
+        quantity,
+      });
+    }
+
+    // Finally save the cart
+    await cart.save();
 
     return res.redirect(`/api/v1/products/product/${productId}`);
   } catch (error) {
