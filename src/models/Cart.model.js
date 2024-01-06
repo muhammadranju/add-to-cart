@@ -2,27 +2,49 @@ const { Schema, model } = require("mongoose");
 
 const addTOcartSchema = new Schema(
   {
-    user: { type: String },
+    // user: { type: String },
 
-    // cart: [
-    //   {
-    productId: {
-      type: String,
+    // // cart: [
+    // //   {
+    // productId: {
+    //   type: String,
+    // },
+    // productTitle: {
+    //   type: String,
+    // },
+    // productPrice: {
+    //   type: Number,
+    // },
+    // productImage: {
+    //   type: String,
+    // },
+    // quantity: {
+    //   type: Number,
+    // },
+    // //   },
+    // // ],
+
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-    productTitle: {
-      type: String,
+    items: {
+      type: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+          },
+          quantity: {
+            type: Number,
+            required: true,
+            min: [1, "Quantity can not be less then 1."],
+            default: 1,
+          },
+        },
+      ],
+      default: [],
     },
-    productPrice: {
-      type: Number,
-    },
-    productImage: {
-      type: String,
-    },
-    quantity: {
-      type: Number,
-    },
-    //   },
-    // ],
   },
   { timestamps: true }
 );
