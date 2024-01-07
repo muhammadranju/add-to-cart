@@ -45,6 +45,15 @@ const addTOcartSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Product",
           },
+          productPrice: {
+            type: Number,
+          },
+          productTitle: {
+            type: String,
+          },
+          productImage: {
+            type: String,
+          },
           quantity: {
             type: Number,
             // required: true,
