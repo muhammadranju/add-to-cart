@@ -4,7 +4,6 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const addToCartGetController = async (req, res, next) => {
   const carts = await Cart.find({ user: req.user?._id });
-  console.log(carts.length === 0);
 
   if (carts.length === 0) {
     return res.status(400).json({ message: "cart not found" });
@@ -19,7 +18,6 @@ const addToCartPostController = asyncHandler(async (req, res, next) => {
     const { quantity = 1 } = req.body;
 
     const cart = await Cart.findOne({ owner: req.user._id });
-    // const cart = await Cart.find();
 
     if (!cart) {
       const newCart = new Cart({ productId, quantity, owner });
