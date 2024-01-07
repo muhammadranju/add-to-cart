@@ -3,7 +3,7 @@ const Authorization = require("../middleware/auth.middleware");
 const {
   addToCartGetController,
   addItemOrUpdateItemQuantity,
-} = require("../controllers/addToCart.controller");
+} = require("../controllers/cart.controller");
 
 router.route("/").get(Authorization, addToCartGetController);
 

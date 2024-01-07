@@ -13,7 +13,7 @@ const addToCartGetController = async (req, res, next) => {
   return res.render("pages/addTOcart", { userCart });
 };
 
-const addToCartPostController = asyncHandler(async (req, res, next) => {
+const addItemOrUpdateItemQuantity = asyncHandler(async (req, res, next) => {
   try {
     const owner = req.user?._id;
     const { productId, productPrice, productTitle, productImage } = req.body;
@@ -98,4 +98,4 @@ const addToCartPostController = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { addToCartGetController, addToCartPostController };
+module.exports = { addToCartGetController, addItemOrUpdateItemQuantity };
