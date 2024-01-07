@@ -38,7 +38,7 @@
                         <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
                       </div>
                     </div>
-                    <%  carts.forEach((cart)=>{%>
+                    <%  userCart.forEach((cart)=>{%>
                     <div class="card mb-3">
                       <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -48,7 +48,7 @@
                             </div>
                             <div class="ms-3">
                               <h5><%=cart.productTitle?.slice(0,30).concat("...") %></h5>
-                              <!-- <p class="small mb-0">256GB, Navy Blue</p> -->
+                              <p class="small mb-0">$<%=cart.productPrice/cart.quantity %></p>
                             </div>
                           </div>
                           <div class="d-flex flex-row align-items-center">
