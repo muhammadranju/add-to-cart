@@ -21,6 +21,10 @@ const userSchema = new Schema(
       trim: true,
       required: true,
     },
+    status: {
+      type: String,
+      default: false,
+    },
   },
   {
     timestamps: true,
