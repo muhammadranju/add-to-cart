@@ -83,7 +83,7 @@ const userRegisterPostController = async (req, res, next) => {
     await user.save();
     return res
       .status(201)
-      .json(new ApiResponse(201, data, "User create successfully"));
+      .json(new ApiResponse(201, data, user, "User create successfully"));
   } catch (error) {
     next(error);
   }
