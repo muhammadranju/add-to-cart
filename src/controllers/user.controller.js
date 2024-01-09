@@ -1,9 +1,13 @@
+const mongoose = require("mongoose");
+
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
+const Product = require("../models/product.model");
+const Cart = require("../models/Cart.model");
 
 const userLoginGetController = async (req, res, next) => {
   return res.status(200).render("pages/login");
@@ -91,10 +95,21 @@ const userRegisterPostController = async (req, res, next) => {
 
 const demoController = asyncHandler(async (req, res, next) => {
   try {
-    const user = await User.find({ status: true }).select("-password -__v");
+    const user = await User.find().select("-password -__v");
+
+    const product = await Product.find();
+
+    const cart = await Cart.find().populate();
+
     return res
       .status(200)
-      .json(new ApiResponse(200, user, "user fetched successfully."));
+      .json(
+        new ApiResponse(
+          200,
+          { user, product, cart },
+          "user fetched successfully."
+        )
+      );
   } catch (error) {
     next(error);
   }
