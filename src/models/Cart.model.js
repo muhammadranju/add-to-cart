@@ -1,43 +1,13 @@
 const { Schema, model } = require("mongoose");
+const mongooseAggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
-const addTOcartSchema = new Schema(
+const cartSchema = new Schema(
   {
-    // user: { type: String },
-
-    // // cart: [
-    // //   {
-    // productId: {
-    //   type: String,
-    // },
-    // productTitle: {
-    //   type: String,
-    // },
-    // productPrice: {
-    //   type: Number,
-    // },
-    // productImage: {
-    //   type: String,
-    // },
-    // quantity: {
-    //   type: Number,
-    // },
-    // //   },
-    // // ],
-
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    // productId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Product",
-    // },
-    // quantity: {
-    //   type: Number,
-    //   required: true,
-    //   min: [1, "Quantity can not be less then 1."],
-    //   default: 1,
-    // },
+
     items: {
       type: [
         {
@@ -56,7 +26,7 @@ const addTOcartSchema = new Schema(
           },
           quantity: {
             type: Number,
-            // required: true,
+            required: true,
             min: [1, "Quantity can not be less then 1."],
             default: 1,
           },
@@ -68,6 +38,8 @@ const addTOcartSchema = new Schema(
   { timestamps: true }
 );
 
-const Cart = model("Cart", addTOcartSchema);
+cartSchema.plugin(mongooseAggregatePaginate);
+
+const Cart = model("Cart", cartSchema);
 
 module.exports = Cart;
