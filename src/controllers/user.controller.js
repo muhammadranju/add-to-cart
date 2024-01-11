@@ -95,21 +95,38 @@ const userRegisterPostController = async (req, res, next) => {
 
 const demoController = asyncHandler(async (req, res, next) => {
   try {
-    const user = await User.find().select("-password -__v");
+    async function simple() {
+      const user = await User.find().select("-password -__v");
 
-    const product = await Product.find();
+      const product = await Product.find();
 
-    const cart = await Cart.find().populate();
+      const cart = await Cart.find().populate();
 
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(
-          200,
-          { user, product, cart },
-          "user fetched successfully."
-        )
-      );
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            { user, product, cart },
+            "user fetched successfully."
+          )
+        );
+    }
+
+    async function sameHard() {
+      const user = User.aggregate([
+        {
+          $match: {
+            username: "muhamadranju",
+          },
+        },
+      ]);
+      console.log(user);
+      return res
+        .status(200)
+        .json(new ApiResponse(200, { user }, "user fetched successfully."));
+    }
+    sameHard();
   } catch (error) {
     next(error);
   }
