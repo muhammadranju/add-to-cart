@@ -113,11 +113,29 @@ const demoController = asyncHandler(async (req, res, next) => {
         );
     }
 
-    async function sameHard() {
-      const user = User.aggregate([
+    async function sameHard(userId) {
+      const user = Cart.aggregate([
         {
           $match: {
-            username: "muhamadranju",
+            owner: userId,
+          },
+        },
+        {
+          $unwind: "$items",
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "items.productId",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        {
+          $project: {
+            // _id: 0,
+            product: { $first: "$product" },
+            quantity: "$items.quantity",
           },
         },
       ]);
@@ -126,7 +144,7 @@ const demoController = asyncHandler(async (req, res, next) => {
         .status(200)
         .json(new ApiResponse(200, { user }, "user fetched successfully."));
     }
-    sameHard();
+    sameHard("6595a3fbb4af8b74805abdda");
   } catch (error) {
     next(error);
   }
