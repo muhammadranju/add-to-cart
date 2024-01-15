@@ -12,7 +12,9 @@ const start = async () => {
   try {
     await connectDB();
     server.listen(PORT, () => {
-      console.log(`Server is running at http://localhost:${PORT}`);
+      console.log(
+        `Server is running at http://localhost:${PORT}/api/v1/products`
+      );
     });
   } catch (e) {
     console.log("Database Error");
