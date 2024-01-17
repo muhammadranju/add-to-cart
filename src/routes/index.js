@@ -6,6 +6,6 @@ const userRoute = require("./user.routes");
 
 router.use(`${ApiVersion}/add-to-cart`, cartRoute);
 router.use(`${ApiVersion}/products`, productRoute);
-router.use(`${ApiVersion}/`, userRoute);
+router.use(`${ApiVersion}/user`, userRoute);
 
 module.exports = router;
