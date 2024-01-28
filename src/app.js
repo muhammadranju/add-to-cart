@@ -11,6 +11,9 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("src/views"));
 app.use(express.static(path.resolve("src/public")));
 
+app.get("/", (req, res) => {
+  return res.status(200).redirect("/api/v1/products");
+});
 app.use(middleware);
 app.use(routes);
 

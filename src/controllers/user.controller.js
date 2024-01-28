@@ -95,56 +95,9 @@ const userRegisterPostController = async (req, res, next) => {
 
 const demoController = asyncHandler(async (req, res, next) => {
   try {
-    async function simple() {
-      const user = await User.find().select("-password -__v");
-
-      const product = await Product.find();
-
-      const cart = await Cart.find().populate();
-
-      return res
-        .status(200)
-        .json(
-          new ApiResponse(
-            200,
-            { user, product, cart },
-            "user fetched successfully."
-          )
-        );
-    }
-
-    async function sameHard(userId) {
-      const user = Cart.aggregate([
-        {
-          $match: {
-            owner: userId,
-          },
-        },
-        {
-          $unwind: "$items",
-        },
-        {
-          $lookup: {
-            from: "products",
-            localField: "items.productId",
-            foreignField: "_id",
-            as: "product",
-          },
-        },
-        {
-          $project: {
-            // _id: 0,
-            product: { $first: "$product" },
-            quantity: "$items.quantity",
-          },
-        },
-      ]);
-      console.log(user);
-      return res
-        .status(200)
-        .json(new ApiResponse(200, { user }, "user fetched successfully."));
-    }
-    sameHard("6595a3fbb4af8b74805abdda");
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "{}", "user fetched successfully."));
   } catch (error) {
     next(error);
   }
