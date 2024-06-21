@@ -14,13 +14,12 @@ const userLoginGetController = async (req, res, next) => {
 };
 const userLoginPostController = asyncHandler(async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    const { email, password } = req.body;
+    if (!email || !password) {
       throw new ApiError(400, "All field are required");
       return res.status(200).json({ error: "All field are required" });
     }
 
-    console.log(req.body);
     const findUser = await User.findOne({ email });
     if (!findUser) {
       return res.status(200).json({ error: "Invalid email or password" });
@@ -46,20 +45,23 @@ const userLoginPostController = asyncHandler(async (req, res, next) => {
       httpOnly: true,
       secure: true,
     };
-
-    res
-      .status(200)
-      .cookie("accessToken", accessToken, options)
-      .json(new ApiResponse(200, { accessToken }, "User login successfully"));
+    res.cookie("accessToken", accessToken, options);
+    res.redirect("/api/v1/products");
+    // res
+    //   .status(200)
+    //   .cookie("accessToken", accessToken, options)
+    //   .json(new ApiResponse(200, { accessToken }, "User login successfully"));
   } catch (error) {
     next(error);
   }
 });
 
-const userRegisterGetController = async (req, res, next) => {};
+const userRegisterGetController = async (req, res, next) => {
+  return res.status(201).render("pages/register");
+};
 const userRegisterPostController = async (req, res, next) => {
   try {
-    const { username, fullName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     if ((!username, !email, !password)) {
       throw new ApiError(400, "All fields are required");
@@ -75,7 +77,6 @@ const userRegisterPostController = async (req, res, next) => {
 
     const user = new User({
       username,
-      fullName,
       email,
       password: hashPassword,
     });
@@ -84,10 +85,12 @@ const userRegisterPostController = async (req, res, next) => {
       fullName: user.fullName,
       email: user.email,
     };
-    await user.save();
-    return res
-      .status(201)
-      .json(new ApiResponse(201, data, user, "User create successfully"));
+    console.log(user);
+    // await user.save();
+    res.redirect("/api/v1/user/login");
+    // return res
+    //   .status(201)
+    //   .json(new ApiResponse(201, data, user, "User create successfully"));
   } catch (error) {
     next(error);
   }

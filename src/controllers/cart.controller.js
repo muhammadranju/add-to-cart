@@ -8,7 +8,15 @@ const addToCartGetController = async (req, res, next) => {
   const userCart = carts[0]?.items.map((item) => item);
 
   if (carts.length === 0) {
-    return res.status(400).json({ message: "cart not found" });
+    // return res.render("pages/addTOcart", { userCart });
+    return res.status(400).send(
+      `
+      <h1>Cart Not Found</h1>
+      <h1> <a href="/api/v1/products">Go TO Home</a></h1>
+      
+     
+      `
+    );
   }
   return res.render("pages/addTOcart", { userCart });
 };

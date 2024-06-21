@@ -3,15 +3,19 @@
 <!-- Navbar -->
 
 <main>
-  <section style="background-color: #eee;">
+  <section style="background-color: #eee">
     <div class="container py-5 mt-5">
       <div class="row">
-        <%  products.forEach((product)=>{%>
+        <% products.forEach((product)=>{%>
 
         <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
           <div class="card mb-2">
             <a href="/api/v1/products/product/<%= product._id %>">
-              <img src="<%= product.image %>" class="card-img-top" alt="Laptop" />
+              <img
+                src="<%= product.image %>"
+                class="card-img-top"
+                alt="Laptop"
+              />
             </a>
             <div class="card-body">
               <div class="d-flex justify-content-between">
@@ -19,14 +23,18 @@
               </div>
 
               <div class="d-flex justify-content-between mb-3">
-                <span class="mb-0"><%= product.title.slice(0,25).concat("...") %></span>
+                <span class="mb-0"
+                  ><%= product.title.slice(0,25).concat("...") %></span
+                >
                 <h5 class="text-dark mb-0">
                   <span class="text-lg-end">৳ </span> <%= product.price %>
                 </h5>
               </div>
 
               <div class="d-flex justify-content-between mb-2">
-                <p class="text-muted mb-0">Available: <span class="fw-bold"><%= product.stocks %></span></p>
+                <p class="text-muted mb-0">
+                  Available: <span class="fw-bold"><%= product.stocks %></span>
+                </p>
                 <div class="ms-auto text-warning">
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star"></i>
@@ -35,16 +43,28 @@
                   <i class="fa fa-star"></i>
                 </div>
                 <form method="post" action="/api/v1/add-to-cart">
-                  <input type="hidden" name="productId" value="<%= product._id %>">
-                  <input type="hidden" name="productTitle" value="<%=product.title %>">
-                  <input type="hidden" name="productPrice" value="<%= product.price %>">
-                  <input type="submit" class="btn btn-primary" value="Add To Cart">
+                  <input
+                    type="hidden"
+                    name="productId"
+                    value="<%= product._id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="productTitle"
+                    value="<%=product.title %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="productPrice"
+                    value="<%= product.price %>"
+                  />
+                  <!-- <input type="submit" class="btn btn-primary" value="Add To Cart"> -->
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <%     }) %>
+        <% }) %>
         <!-- <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
             <div class="card">
               <div class="d-flex justify-content-between p-3">
@@ -78,8 +98,6 @@
               </div>
             </div>
           </div> -->
-
-
       </div>
     </div>
   </section>
